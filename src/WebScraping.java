@@ -20,21 +20,29 @@ public class WebScraping {
 
 	public static void main(String[] args) {
 		
-		final String url = "https://www.zillow.com/homes/Merced,-CA_rb/";
+		final String url = "https://www.redfin.com/city/11970/CA/Merced";
+		
+		// https://www.zillow.com/homes/Merced,-CA_rb/  link for Zillow 
 		
 		try {
 			Document page = Jsoup.connect(url).get();
-			Elements img = page.select("img");
+			Elements img = page.select(".HomeCard.MapHomeCardReact > .interactive.v2 > .homecardv2 > .cover-all > .photoContainer.PhotoSlider > .scrollable > a.slider-item:nth-of-type(1)");
+			// page.select("img")
+			String src = "";
 			
 			for (Element el : img) {
-				 
-                //for each element get the src url
-                String src = el.absUrl("src");
-               
-                System.out.println("Image Found!");
-                System.out.println("src attribute is : "+ src);
- 
-                getImages(src);
+				
+				if (el.getAllElements().get(1).hasAttr("src")){
+					System.out.println("Image Found!");
+					
+					System.out.println("src attribute is : " + el.getAllElements().get(1).attr("src"));
+				}
+				else {
+					System.out.println("Image Found on else!");
+					System.out.println("src attribute is : " + el.getAllElements().get(1).toString().substring(51, 129));
+				}
+
+//                getImages(src);
                 
                 
             }		
